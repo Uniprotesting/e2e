@@ -1,7 +1,7 @@
 const { addArgument } = require('@wdio/allure-reporter').default;
 const debug = !!process.env.DEBUG;
 const execArgv = debug ? ['--inspect'] : [];
-const stepTimout = debug ? 24 * 60 * 60 * 1000 : 6000;
+const stepTimout = debug ? 24 * 60 * 60 * 1000 : 600000;
 const capabilities = debug
     ? [{ browserName: 'chrome', maxInstances: 1 }]
     : [
@@ -9,7 +9,7 @@ const capabilities = debug
               // maxInstances can get overwritten per capability. So if you have an in-house Selenium
               // grid with only 5 firefox instances available you can make sure that not more than
               // 5 instances get started at a time.
-              maxInstances: 5,
+              maxInstances: 1,
               //
               browserName: 'chrome',
               // If outputDir is provided WebdriverIO can capture driver session logs
@@ -20,20 +20,20 @@ const capabilities = debug
                   // to run chrome headless the following flags are required
                   // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
                   args: [
-                      '--headless',
+                      //'--headless',
                       '--disable-gpu',
                       '--disable-software-rasterizer',
                   ],
               },
           },
-          {
-              maxInstances: 5,
-              browserName: 'firefox',
-              'moz:firefoxOptions': {
-                  // flag to activate Firefox headless mode (see https://github.com/mozilla/geckodriver/blob/master/README.md#firefox-capabilities for more details about moz:firefoxOptions)
-                  args: ['-headless'],
-              },
-          },
+        //   {
+        //       maxInstances: 5,
+        //       browserName: 'firefox',
+        //       'moz:firefoxOptions': {
+        //           // flag to activate Firefox headless mode (see https://github.com/mozilla/geckodriver/blob/master/README.md#firefox-capabilities for more details about moz:firefoxOptions)
+        //           args: ['-headless'],
+        //       },
+        //   },
       ];
 
 const maxInstances = debug ? 1 : 10;
@@ -61,7 +61,7 @@ exports.config = {
     // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
-    specs: ['./src/features/**/*.feature'],
+    specs: ['./src/features/**/PK.feature'],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -175,11 +175,11 @@ exports.config = {
         failFast: false, // <boolean> abort the run on first failure
         format: ['pretty'], // <string[]> (type[:path]) specify the output format, optionally supply PATH to redirect formatter output (repeatable)
         colors: true, // <boolean> disable colors in formatter output
-        snippets: true, // <boolean> hide step definition snippets for pending steps
+        snippets: false, // <boolean> hide step definition snippets for pending steps
         source: true, // <boolean> hide source uris
         profile: [], // <string[]> (name) specify the profile to use
         strict: false, // <boolean> fail if there are any undefined or pending steps
-        tagExpression: '', // <string> (expression) only execute the features or scenarios with tags matching the expression
+        tagExpression: '@pk', // <string> (expression) only execute the features or scenarios with tags matching the expression
         timeout: stepTimout, // <number> timeout for step definitions
         ignoreUndefinedDefinitions: false, // <boolean> Enable this config to treat undefined definitions as warnings
         requireModule: [

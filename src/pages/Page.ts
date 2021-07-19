@@ -7,6 +7,6 @@ export default abstract class Page {
 
     public open(path: string): void {
         this._path = path;
-        browser.url(path);
+        browser.url(path); 
     }
 }
